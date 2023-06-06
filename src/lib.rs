@@ -1,6 +1,19 @@
 use pyo3::prelude::*;
 
 #[pyfunction]
+fn levenshtein(
+    a: &[u8],
+    b: &[u8]
+) -> PyResult<u32> {
+    Ok(
+        triple_accel::levenshtein::levenshtein_exp(
+            a,
+            b,
+        )
+    )
+}
+
+#[pyfunction]
 fn levenshtein_search(
     needle: &[u8],
     haystack: &[u8],
@@ -35,5 +48,6 @@ fn levenshtein_search(
 #[pymodule]
 fn triple_accel_py(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(levenshtein_search, m)?)?;
+    m.add_function(wrap_pyfunction!(levenshtein, m)?)?;
     Ok(())
 }
